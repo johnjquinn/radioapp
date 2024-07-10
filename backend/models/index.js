@@ -5,8 +5,8 @@ mongoose.Promise = global.Promise;
 const db = {};
 db.mongoose = mongoose;
 db.url = MONGO_URL;
-//db.albums = require('./albumModel')(mongoose);
-//db.users = require('./userModel')(mongoose);
-//db.playlists = require('./playlistModel')(mongoose);
+db.albums = require('./albumModel')(mongoose);
+db.users = require('./userModel')(mongoose);
+db.playlists = require('./playlistModel')(mongoose);
 
 module.exports = db;
