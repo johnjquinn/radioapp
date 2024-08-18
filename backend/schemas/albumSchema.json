@@ -1,0 +1,58 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "properties": {
+        "title": {
+            "type": "string",
+            "minLength": 1
+        },
+        "releaseDate": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 10
+        },
+        "artist": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "songs": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "length": {
+                        "type": "number"
+                    },
+                    "artist": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "discNum": {
+                        "type": "number"
+                    },
+                    "trackNum": {
+                        "type": "number"
+                    },
+                    "explicit": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "title",
+        "releaseDate",
+        "artist",
+        "songs"
+    ]
+}

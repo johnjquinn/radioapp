@@ -3,6 +3,7 @@ module.exports = mongoose => {
         {
             title: String,
             releaseDate: Date,
+            artist: [String],
             songs: [
                 {
                     title: String,
@@ -17,11 +18,6 @@ module.exports = mongoose => {
         },
         {timestamps: true}
     );
-    schema.method("toJSON", () => {
-        const { __v, _id, ...object} = this.toObject();
-        object.id = _id;
-        return object;
-    });
     const Album = mongoose.model("album", schema);
     return Album;
 };
