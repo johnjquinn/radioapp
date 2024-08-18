@@ -11,7 +11,9 @@
         },
         "artist": {
             "type": "array",
-            "items": "string"
+            "items": {
+                "type": "string"
+            }
         },
         "discNum": {
             "type": "number",
