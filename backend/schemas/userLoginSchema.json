@@ -10,28 +10,13 @@
         },
         "password": {
             "type": "string",
-            "minLength": 8
-        },
-        "name": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 30
-        },
-        "email": {
-            "type": "string",
             "minLength": 5,
-            "maxLength": 30,
-            "format": "email"
-        },
-        "role": {
-            "type" : "string"
+            "maxLength": 20
         }
     },
     "additionalProperties": false,
     "required": [
         "username",
-        "password",
-        "name",
-        "email"
+        "password"
     ]
 }

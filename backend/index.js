@@ -2,9 +2,11 @@ const express = require('express');
 const userRouter = require('./routes/userRoutes');
 const albumRouter = require('./routes/albumRoutes');
 const songRouter = require('./routes/songRoutes');
+const tokenRouter = require('./routes/tokenRoute');
 const cors = require('cors');
 const logger = require('./util/logger');
 const db = require('./models');
+const { authenticateJWT } = require('./middleware/auth');
 
 const PORT = 9000;
 const app = express();
@@ -18,10 +20,12 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(cors());
+app.use(express.urlencoded());
+app.use(authenticateJWT);
 app.use('/users', userRouter);
 app.use('/albums', albumRouter);
 app.use('/songs', songRouter);
-
+app.use('/token', tokenRouter);
 
 app.use((err, req, res, next) => {
     const status = err.status || 500;

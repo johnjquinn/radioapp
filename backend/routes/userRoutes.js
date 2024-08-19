@@ -1,11 +1,12 @@
 const express = require('express');
 const userService = require('../services/userService');
 const {NotFoundError, BadRequestError} = require('../util/expressError');
+const {ensureLoggedIn, ensureAdmin} = require('../middleware/auth');
 const router = express.Router();
 
 router.post('/', async (req, res, next) => {
     try {
-        const data = await userService.createUser(req.body);
+        const data = await userService.registerUser(req.body);
         if(!data.response) throw new BadRequestError(data.errors);
         return res.status(201).json(data);
     } catch (error) {
@@ -13,7 +14,17 @@ router.post('/', async (req, res, next) => {
     }
 });
 
-router.get('/', async (req, res, next) => {
+router.post('/login', async (req, res, next) => {
+    try {
+        const data = await userService.loginUser(req.body);
+        if(!data.response) throw new BadRequestError(data.errors);
+        return res.status(200).json(data);
+    } catch (error) {
+        return next(error);
+    }
+});
+
+router.get('/', ensureLoggedIn, async (req, res, next) => {
     try {
         const idQuery = req.query.id;
         const usernameQuery = req.query.username;
@@ -34,18 +45,27 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.put('/', async (req, res, next) => {
+router.put('/', ensureLoggedIn, async (req, res, next) => {
     try {
-        const idQuery = req.query.id;
-        const data = await userService.updateUser(idQuery, req.body);
-        if(!data.response) throw new BadRequestError(data.errors);
-        return res.status(200).json(data);
+        const profileQuery = req.query.profile;
+        const passwordChangeQuery = req.query.passwordChange;
+        if(profileQuery){
+            const data = await userService.editProfile(req.body);
+            if(!data.response) throw new BadRequestError(data.errors);
+            return res.status(200).json(data); 
+        }
+        if(passwordChangeQuery){
+            const data = await userService.changePassword(req.body);
+            if(!data.response) throw new BadRequestError(data.errors);
+            return res.status(200).json(data);
+        }
+        throw new BadRequestError();
     } catch (error) {
         return next(error);
     }
 });
 
-router.delete('/', async (req, res, next) => {
+router.delete('/', ensureAdmin, async (req, res, next) => {
     try {
         const idQuery = req.query.id;
         if(idQuery){
