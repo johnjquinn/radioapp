@@ -44,6 +44,24 @@ const deleteAlbum = async id => {
     return data;
 };
 
+const getSongsByArtist = async artist => {
+    const data = await Album.find({'songs.artist': artist}).exec();
+    let songs = [];
+    data.forEach(album => {
+        songs = songs.concat(album.songs);
+    });
+    return songs;
+}
+
+const getSongByID = async songID => {
+    const data = await Album.find({'songs.songID': songID});
+    let songs = [];
+    data.forEach(album => {
+        songs = album.songs.filter(song => song.songID === songID);
+    });
+    return songs;
+}
+
 module.exports = {
     createAlbum,
     getAllAlbums,
@@ -51,5 +69,7 @@ module.exports = {
     getAlbumsByArtist,
     updateAlbum,
     deleteAllAlbums,
-    deleteAlbum
+    deleteAlbum,
+    getSongsByArtist,
+    getSongByID
 };

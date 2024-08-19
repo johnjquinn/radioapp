@@ -73,6 +73,28 @@ const deleteAlbum = async id => {
     return {response: true, message: `Album [${id}] deleted`};
 };
 
+const getAllSongs = async () => {
+    const albumData = await albumRepo.getAllAlbums(true);
+    let songs = [];
+    albumData.forEach(album => {
+        songs = songs.concat(album.songs);
+    });
+    console.log(songs);
+    return {response: true, message: "All songs found", data: songs};
+}
+
+const getSongsByArtist = async artist => {
+    const data = await albumRepo.getSongsByArtist(artist);
+    if(!data.length) return {response: false, errors: `No songs found by artist ${artist}`};
+    return {response: true, message: `All songs found by artist ${artist}`, data};
+};
+
+const getSongByID = async songID => {
+    const data = await albumRepo.getSongByID(songID);
+    if(!data.length) return {response: false, errors: `No song with songID ${songID} found`};
+    return {response: true, message: `Song ${songID} found`, data};
+}
+
 const validateAlbum = payload => {
     const validator = jsonschema.validate(payload, albumSchema);
     if(!validator.valid){
@@ -89,5 +111,8 @@ module.exports = {
     getAlbumsByArtist,
     updateAlbum,
     deleteAllAlbums,
-    deleteAlbum
+    deleteAlbum,
+    getAllSongs,
+    getSongsByArtist,
+    getSongByID
 };

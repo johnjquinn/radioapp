@@ -1,6 +1,7 @@
 const express = require('express');
 const userRouter = require('./routes/userRoutes');
 const albumRouter = require('./routes/albumRoutes');
+const songRouter = require('./routes/songRoutes');
 const cors = require('cors');
 const logger = require('./util/logger');
 const db = require('./models');
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use(cors());
 app.use('/users', userRouter);
 app.use('/albums', albumRouter);
+app.use('/songs', songRouter);
 
 
 app.use((err, req, res, next) => {
