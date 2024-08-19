@@ -1,3 +1,4 @@
+import './homepage.css';
 const HomePageController = () => {
     return (
         <>
