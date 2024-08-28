@@ -18,6 +18,11 @@
                 "type": "string"
             }
         },
+        "discs": {
+            "type": "number",
+            "minValue": 1,
+            "maxValue": 99
+        },
         "songs": {
             "type": "array",
             "items": {
@@ -53,6 +58,7 @@
         "title",
         "releaseDate",
         "artist",
+        "discs",
         "songs"
     ]
 }

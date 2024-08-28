@@ -18,6 +18,7 @@ const createAlbum = async payload => {
         title: payload.title,
         releaseDate: payload.releaseDate,
         artist: payload.artist,
+        discs: payload.discs,
         songs: songList
     };
     const data = await albumRepo.createAlbum(album);
@@ -41,6 +42,7 @@ const getAlbumsByArtist = async (artist, full) => {
     return {response: true, message: `Albums by ${artist} found`, data};
 }
 
+//EDIT LATER
 const updateAlbum = async (id, payload) => {
     const validated = validateAlbum(payload);
     if(!validated.response) return {response: false, errors: validated.errors};

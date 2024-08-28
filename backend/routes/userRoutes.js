@@ -45,15 +45,31 @@ router.get('/', ensureLoggedIn, async (req, res, next) => {
     }
 });
 
+router.get('/profile', ensureLoggedIn, async (req, res, next) => {
+    const user_id = res.locals.user.id;
+    try {
+        const data = await userService.getUser(user_id);
+        if(!data.response) throw new NotFoundError(data.errors);
+        return res.status(200).json(data);
+    } catch (error) {
+        return next(error);
+    }
+});
+
+router.post('/profile', ensureLoggedIn, async (req, res, next) => {
+    const username = res.locals.user.username;
+    try {
+        const data = await userService.editProfile({username, ...req.body});
+        if(!data.response) throw new BadRequestError(data.errors);
+        return res.status(200).json(data);
+    } catch (error) {
+        return next(error);
+    }
+});
+
 router.put('/', ensureLoggedIn, async (req, res, next) => {
     try {
-        const profileQuery = req.query.profile;
         const passwordChangeQuery = req.query.passwordChange;
-        if(profileQuery){
-            const data = await userService.editProfile(req.body);
-            if(!data.response) throw new BadRequestError(data.errors);
-            return res.status(200).json(data); 
-        }
         if(passwordChangeQuery){
             const data = await userService.changePassword(req.body);
             if(!data.response) throw new BadRequestError(data.errors);
